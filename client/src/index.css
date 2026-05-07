@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@tailwind utilities;
+
+@theme{
+  --color-logo-morado:#961484;
+  --color-logo-morado-oscuro:#731066;
+  --color-logo-azul:#14a5ec;
+  --color-logo-azul-oscuro:#0174f9;
+}
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+  }
+}
