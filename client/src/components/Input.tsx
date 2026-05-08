@@ -8,10 +8,10 @@ const Input = ({
   return (
     <input
       {...props}
-      onFocus={(e) => {
-        e.currentTarget.dataset.focused = "false";
-        props.onFocus?.(e);
-      }}
+      // onFocus={(e) => {
+      //   e.currentTarget.dataset.focused = "false";
+      //   props.onFocus?.(e);
+      // }}
       onBlur={(e) => {
         e.currentTarget.dataset.focused = "true";
         props.onBlur?.(e);

@@ -31,8 +31,11 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 from app.Users.routes import routerUser
 from app.Stripe.routes import routerStripe
+from app.Tasks.routes import routerTask
+
 
 app.include_router(routerUser)
 app.include_router(routerStripe)
+app.include_router(routerTask)
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost", port=8080)

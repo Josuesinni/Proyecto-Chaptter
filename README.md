@@ -8,8 +8,9 @@
 ### Pasos para instalar el Backend
 # 1. Entrar a la terminal
 # 1. Ir a la carpeta server
+# 2. Crear el entorno virtual python -m venv venv
 # 2. Activar el entorno virtual de python usando entrando en la terminal y ejecutar venv\Scripts\activate o source venv\Scripts\activate
-# 3. Usar el comando pip install para instalar las librearías necesarias 
+# 3. Usar el comando pip install -r requirements.txt para instalar las librearías necesarias 
 # 4. Usar el comando para ejecutar el servidor uvicorn main:app --port 8080 --host localhost --reload
 
 

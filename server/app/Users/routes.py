@@ -1,18 +1,18 @@
 from datetime import datetime, timedelta, timezone
-
-import bcrypt
-from fastapi import Request, APIRouter, Response, Cookie
-
+from fastapi import Request, APIRouter, Response
 from database import SessionLocal
 from app.Functions.secure_passwords import hash_password,verify_password
 from app.middleware.auth import get_current_user
 from .models import User
-from sqlalchemy import select
+from jose import jwt
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 routerUser = APIRouter()
 
 @routerUser.post("/user", status_code=201)
-async def crearUsuario(request: Request):
+async def crearUsuario(request: Request,response:Response):
     payload = await request.json()
     password=payload["password"]
     username=payload["user"]
@@ -20,21 +20,31 @@ async def crearUsuario(request: Request):
     hashed_password = hash_password(password)
     db= SessionLocal()
     try:
-        db.begin()
         nuevoUsuario=User(username=username,password=hashed_password,email=email)
         db.add(nuevoUsuario)
         db.commit()
-        db.close()
-        return {"success": True}
-    except:
+        data={
+            "usuario":username,
+            "email":email,
+            "is_premium":False
+        }
+        accessToken=crearTokenJWT(data)
+        if(accessToken==False):return
+        response.set_cookie( 
+            key="access_token",
+            value=accessToken,
+            max_age=3600,
+            httponly=True,
+            secure=False,
+            samesite="lax"
+        )
+        return {"success": True, "user":data}
+    except Exception as e:
         db.rollback()
+        print("Error:", e)
         return {"success": False}
-
-from jose import jwt, JWTError
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
+    finally:
+        db.close()
 
 @routerUser.post("/user/login", status_code=200)
 async def login(request:Request,response: Response):
@@ -52,10 +62,8 @@ async def login(request:Request,response: Response):
             "email":email,
             "is_premium":user.is_premium
         }
-        print(data)
         accessToken=crearTokenJWT(data)
         if(accessToken==False):return
-        print(accessToken)
         response.set_cookie( 
             key="access_token",
             value=accessToken,
@@ -107,3 +115,10 @@ def crearTokenJWT(data:dict):
     expire = datetime.now(timezone.utc) + timedelta(minutes=60)
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+def getIdUsuario(email:str):
+    session= SessionLocal()
+    user=session.query(User).filter(User.email == email).first()
+    if not user:
+        return {"error": "Usuario no encontrado"}
+    return user.id

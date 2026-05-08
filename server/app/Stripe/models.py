@@ -7,6 +7,6 @@ class SuscriptionUser(Base):
     __tablename__="SuscriptionUser"
     id=Column(Integer,primary_key=True,index=True)
     idUser=Column(String, ForeignKey("User.id"), nullable=False)
-    user = relationship("User", back_populates="SuscriptionUser")
+    userSuscription = relationship("User", back_populates="SuscriptionUser")
 
 

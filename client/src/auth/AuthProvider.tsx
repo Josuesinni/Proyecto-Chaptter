@@ -1,5 +1,5 @@
 import { useState, useEffect, type ReactNode } from "react";
-import { api } from "../api"; // tu instancia de axios con withCredentials:true
+import { api, sendAxios } from "../api"; // tu instancia de axios con withCredentials:true
 import { AuthContext } from "./AuthContext";
 import type { User } from "./type";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +23,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const res = await api.post("/user/login", { email, password });
+    const res = await sendAxios({
+      url: "/user/login",
+      method: "POST",
+      data: { email, password },
+      customErrorMessageResponse: "Ha ocurrido un error al iniciar sesión",
+      customSuccessMessageResponse: "Se ha iniciado sesión exitosamente",
+    });
+    console.log(res)
     if (!res.data.success) {
       console.error("Error al iniciar sesión", res.status);
       return;
@@ -33,7 +40,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const createUser = async (user: string, email: string, password: string) => {
-    const res = await api.post("/user", { user, email, password });
+    const res = await sendAxios({
+      url: "/user",
+      method: "POST",
+      data: { user, email, password },
+      customErrorMessageResponse: "Ha ocurrido un error al registrar al usuario",
+      customSuccessMessageResponse: "Se ha registrado exitosamente al usuario",
+    });
     if (!res.data.success) {
       console.error("Error al registrar el usuario", res.status);
       return;
