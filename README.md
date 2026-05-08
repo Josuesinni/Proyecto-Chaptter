@@ -1,3 +1,7 @@
+### Variables .env del backend
+STRIPE_SECRET_KEY=sk_test_51TRL4v8qFgrgXiMdq5hbxUBa2MAHBQ3UWqBhsCpMOgNH8NrRxVooz4jqaV4Xe0j4fRWzejgMJGChLGr7Mq93Ff9e006WIjeTpX
+
+
 ### Pasos para ejecutar el Frontend
 # 1. Entrar a la terminal 
 # 2. Ir a la carpeta client 
