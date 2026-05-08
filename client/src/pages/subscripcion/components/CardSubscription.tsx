@@ -21,6 +21,9 @@ const CardSubscription = ({
     console.log(res.data.session._data.url);
     window.location.href = res.data.session._data.url;
   };
+  const empezar = async () => {
+    navigate("/login");
+  };
   return (
     <div
       className={clsx(
@@ -34,13 +37,16 @@ const CardSubscription = ({
       <p className="text-3xl font-bold text-center">${precio}</p>
       <button
         onClick={() => {
-          if (tipo == 1) pagarSuscripcion();
+          if(tipo==0) return empezar();
+          if (tipo == 1 || user?.is_premium==0 ) pagarSuscripcion();
         }}
+        disabled={user?.is_premium==1}
         className={clsx(
           "rounded-2xl p-2 ps-4 pe-4 font-bold cursor-pointer",
           "transition-[background-color] duration-150 ease-in-out",
-          tipo === 0 && "bg-slate-100 hover:bg-slate-200",
-          tipo === 1 && "bg-logo-azul hover:bg-logo-azul-oscuro",
+          tipo === 0 && "bg-slate-100 not-disabledhover:bg-slate-200",
+          tipo === 1 && "bg-logo-azul not-disabled:hover:bg-logo-azul-oscuro",
+          "disabled:opacity-75 disabled:cursor-not-allowed"
         )}
         type="button"
       >

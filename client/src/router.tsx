@@ -4,6 +4,7 @@ import App from "./App";
 import Home from "./pages/home/Home";
 import useTitle from "./hooks/useTitle";
 import Planes from "./pages/subscripcion/Planes";
+import PanelActividades from "./pages/panel_actividades/PanelActividades";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,13 @@ export const router = createBrowserRouter([
         Component: () => {
           useTitle("Planes de Subscripción");
           return <Planes />;
+        },
+      },
+      {
+        path: "/panel-actividades",
+        Component: () => {
+          useTitle("Panel de Actividades");
+          return <PanelActividades />;
         },
       },
     ],

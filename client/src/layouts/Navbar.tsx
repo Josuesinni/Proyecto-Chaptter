@@ -6,16 +6,24 @@ interface NavbarItemTs {
   titulo: string;
   icono?: string;
   ruta: string;
+  restrict:boolean;
 }
 const NavbarItemsList: NavbarItemTs[] = [
   {
     titulo: "Inicio",
     icono: "M160-120v-480l320-240 320 240v480H560v-280H400v280H160Z",
     ruta: "/",
+    restrict:false
   },
   {
     titulo: "Planes",
     ruta: "/planes",
+    restrict:false
+  },
+  {
+    titulo: "Panel de Actividades",
+    ruta: "/panel-actividades",
+    restrict:true
   },
 ];
 
@@ -35,6 +43,7 @@ const Navbar = () => {
         {/* md:min-w-sm lg:min-w-md xl:min-w-xl */}
         <div className="sm:inline hidden">
           {NavbarItemsList.map((item, idx) => {
+            if(!user && item.restrict) return;
             return <NavbarItem {...item} key={idx} />;
           })}
         </div>
