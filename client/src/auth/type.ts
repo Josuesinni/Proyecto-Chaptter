@@ -1,6 +1,7 @@
 export type User = {
   usuario: string;
   is_premium: 0 | 1;
+  email: string;
 };
 
 export type AuthContextType = {

@@ -41,18 +41,18 @@ async def login(request:Request,response: Response):
     payload = await request.json()
     email=payload["email"]
     password=payload["password"]
-    statement = select(User).where(User.email==email).limit(1)
     session= SessionLocal()
-    result = session.execute(statement).scalars().all()
-    if not result:
+    user=session.query(User).filter(User.email == email).first()
+    if not user:
         return {"error": "Usuario no encontrado"}
-    user = result[0]
     verificacion = verify_password(password, user.password) # type: ignore
     if(verificacion):
         data={
-        "usuario":user.username,
-        "is_premium":user.is_premium
-    }
+            "usuario":user.username,
+            "email":email,
+            "is_premium":user.is_premium
+        }
+        print(data)
         accessToken=crearTokenJWT(data)
         if(accessToken==False):return
         print(accessToken)
@@ -74,9 +74,29 @@ async def logout(request:Request,response:Response):
     return {"success": True}
 
 @routerUser.get("/user/me", status_code=200)
-async def isLogged(request:Request):
+async def isLogged(request:Request, response:Response):
     data_decoded=get_current_user(request=request)
-    return {"success": True, "user":data_decoded}
+    db= SessionLocal()
+    db.begin()
+    if(isinstance(data_decoded,dict)):
+        db_user = db.query(User).filter(User.email == data_decoded["email"]).first()
+        if db_user:
+            data = {"usuario":data_decoded["usuario"],"email":data_decoded["email"],"is_premium":db_user.is_premium}
+            accessToken=crearTokenJWT(data)
+            print(accessToken)
+            if(accessToken==False):return
+            response.set_cookie(
+                key="access_token",
+                value=accessToken,
+                max_age=3600,
+                httponly=True,
+                secure=False,
+                samesite="lax"
+            )
+            print(data)
+            return {"success": True, "user":data}
+    else:
+        return {"success": True, "user":data_decoded}
 
 
 def crearTokenJWT(data:dict):

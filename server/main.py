@@ -30,7 +30,9 @@ Base.metadata.create_all(bind=engine)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 from app.Users.routes import routerUser
-app.include_router(routerUser)
+from app.Stripe.routes import routerStripe
 
+app.include_router(routerUser)
+app.include_router(routerStripe)
 if __name__ == "__main__":
     uvicorn.run(app, host="localhost", port=8080)
