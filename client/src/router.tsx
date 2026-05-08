@@ -7,13 +7,6 @@ import Planes from "./pages/subscripcion/Planes";
 
 export const router = createBrowserRouter([
   {
-    path: "/login",
-    Component: () => {
-      useTitle("Inicio de Sesión");
-      return <Login />;
-    },
-  },
-  {
     path: "/",
     Component: App,
     children: [
@@ -22,6 +15,13 @@ export const router = createBrowserRouter([
         Component: () => {
           useTitle("Inicio");
           return <Home />;
+        },
+      },
+      {
+        path: "/login",
+        Component: () => {
+          useTitle("Inicio de Sesión");
+          return <Login />;
         },
       },
       {

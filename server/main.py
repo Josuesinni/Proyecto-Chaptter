@@ -1,27 +1,36 @@
+from fastapi.security import OAuth2PasswordBearer
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import os
+from database import Base, engine
 
-env=load_dotenv()
+load_dotenv()
+
+
 app = FastAPI()
 
-# Configuración CORS para permitir peticiones desde React
+# cors = {
+#     "origin": os.getenv("CORS_ORIGIN", "http://localhost:5173"),
+#     "methods": os.getenv("CORS_METHODS", "GET,POST,PATCH,PUT,DELETE").split(","),
+#     "headers": os.getenv("CORS_HEADERS", "*").split(","),
+# }
+
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # URL del frontend
+    allow_origins=["http://localhost:5173"],  # tu frontend
     allow_credentials=True,
-    allow_methods=["GET,POST,PATCH,PUT,DELETE"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # permite todos los métodos
+    allow_headers=["*"],  # permite todos los headers
 )
 
-# Ruta de ejemplo
-@app.get("/api/hello")
-def read_root():
-    BASE_URL=os.getenv("BASE_URL")
-    return {"message": "Hola desde FastAPI 🚀","otro":BASE_URL}
+Base.metadata.create_all(bind=engine)
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+
+from app.Users.routes import routerUser
+app.include_router(routerUser)
 
 if __name__ == "__main__":
-    
-    uvicorn.run(app,host="localhost",port=8000)
+    uvicorn.run(app, host="localhost", port=8080)
