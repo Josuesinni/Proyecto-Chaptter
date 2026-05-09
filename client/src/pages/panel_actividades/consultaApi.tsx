@@ -63,6 +63,7 @@ export async function updateTask(
       ),
     );
   }
+  return res.data.success;
 }
 export async function updateStateTask(
   id: number,

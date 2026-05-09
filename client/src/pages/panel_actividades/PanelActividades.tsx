@@ -39,7 +39,10 @@ const PanelActividades = () => {
       if (!task?.id) {
         const res = await createTask(data, setTasks, user.email);
         if (res) setTask({ actividad: "" });
-      } else updateTask(data, user.email, setTasks);
+      } else {
+        const res = await updateTask(data, user.email, setTasks);
+        if (res) setTask({ actividad: "" });
+      }
   };
   const mejorarPlan = async () => {
     if (!user) return;
@@ -59,7 +62,7 @@ const PanelActividades = () => {
     setTaskDelete({ actividad: "" });
   };
 
-  const onUpdateEstatus = (task:Task) => {
+  const onUpdateEstatus = (task: Task) => {
     if (user) updateStateTask(task.id, !task.estatus, user.email, setTasks);
   };
   return (

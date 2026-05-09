@@ -1,4 +1,7 @@
 server\venv
+server/venv
+venv/
+venv\
 # Logs
 client\logs
 client\*.log

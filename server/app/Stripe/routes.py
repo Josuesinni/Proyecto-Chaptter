@@ -50,7 +50,7 @@ async def webhook(request: Request,response:Response):
     print(event["type"])
     if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]
-        customer_user = session["metadata"]["usuario"]
+        #customer_user = session["metadata"]["usuario"]
         customer_email = session["metadata"]["email"]
         db= SessionLocal()
         db.begin()

@@ -29,7 +29,7 @@ const Home = () => {
             membresia premium
           </li>
           <li>
-            3. Al inciar sesión podrás acceder al panel de actividades en donde
+            3. Al iniciar sesión podrás acceder al panel de actividades en donde
             podrás registrar y darle seguimiento a las actividades que registres
             <br />
             <i className="font-thin">
