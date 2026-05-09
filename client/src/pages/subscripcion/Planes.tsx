@@ -8,7 +8,7 @@ const Planes = () => {
         <div className="mb-8">
           <h2 className="text-2xl font-bold">Conoce nuestros planes</h2>
           <p>
-            Precios accesibles para. Elige el plan que mejor se adapte para tus
+            Una suscripción de pago accesible. Elige el plan que mejor se adapte para tus
             necesidades
           </p>
         </div>
